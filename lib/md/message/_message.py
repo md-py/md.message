@@ -3,7 +3,7 @@ import typing
 
 # Meta
 __author__ = 'https://md.land/md'
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __all__ = (
     # Meta
     '__author__',
@@ -55,16 +55,16 @@ class ReceiveApplication:
         self,
         receive_message: ReceiveInterface,
         handle_message: HandleInterface,
-        retry_message_exception: typing.Tuple[typing.Union[Exception, type]] = None,
+        retry_exception: typing.Union[Exception, type, typing.Tuple[typing.Union[Exception, type]]] = None,
     ) -> None:
         self._receive_message = receive_message
         self._handle_message = handle_message
-        self._retry_message_exception = retry_message_exception or tuple()
+        self._retry_exception = retry_exception or tuple()
 
     def run(self) -> None:
         for message in self._receive_message.receive():
             try:
                 self._handle_message.handle(message=message)
                 self._receive_message.accept(message=message)
-            except self._retry_message_exception:
+            except self._retry_exception:
                 self._receive_message.reject(message=message)

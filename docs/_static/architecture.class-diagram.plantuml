@@ -32,7 +32,7 @@ package md.message {
   class ReceiveApplication {
     - receive_message: ReceiveInterface
     - handle_message: HandleInterface
-    - retry_message_exception: typing.Tuple[typing.Union[Exception, type]]
+    - retry_exception: Union[Exception, type, Tuple[Union[Exception, type]]] = None
     ---
     + run() -> None
   }
